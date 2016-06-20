@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+<script src="js/react.min.js"></script>
+<script src="js/react-dom.min.js"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+     <script>
+/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+(function(){var a={}.hasOwnProperty;function b(){var g=[];for(var f=0;f<arguments.length;f++){var c=arguments[f];if(!c){continue}var d=typeof c;if(d==="string"||d==="number"){g.push(c)}else{if(Array.isArray(c)){g.push(b.apply(null,c))}else{if(d==="object"){for(var e in c){if(a.call(c,e)&&c[e]){g.push(e)}}}}}}return g.join(" ")}if(typeof module!=="undefined"&&module.exports){module.exports=b}else{if(typeof define==="function"&&typeof define.amd==="object"&&define.amd){define("classnames",[],function(){return b})}else{window.classNames=b}}}());
+
+</script>
+
+
+<style>
+
+#parentProviderTree .togglable {
+color:#000;
+cursor:pointer;
+}
+
+#parentProviderTree .togglable-down::after,.togglable-up::after {
+margin-left:.5em;
+padding-top:.1em;
+display:inline-block;
+position:absolute;
+border:1px solid #000;
+line-height:1em;
+height:1em;
+width:1em;
+text-align:center;
+font-size:.7em;
+left:-.9em;
+top:.4em;
+background-color:#000;
+color:#fff;
+border-radius:20%;
+z-index: 50;
+}
+
+#parentProviderTree .togglable-down::before,.togglable-up::before { 
+    position: absolute;
+    left: -.5em;
+    top: .1em;
+    border-radius: 20%;
+    height: 1.3em;
+    width: 1.3em;
+    background-color: #fff;
+    content: " ";
+    z-index: 25;
+}
+
+#parentProviderTree .togglable-down::after {
+content:"-";
+}
+
+#parentProviderTree .togglable-up::after {
+content:"+";
+
+}
+
+#parentProviderTree li,#parentProviderTree ul {
+position:relative;
+}
+
+#parentProviderTree>ul ul,#parentProviderTree>ul {
+list-style-type:none;
+margin:0;
+padding:0;
+}
+
+
+#parentProviderTree>ul li {
+line-height:2em;
+color:#000;
+font-weight:700;
+margin:0;
+padding:0 12px;
+}
+
+/* draw tree lines */
+#parentProviderTree li.last-node .container:first-child::before {
+content:' ';
+position:absolute;
+border-left:1px solid #347ab7;
+border-bottom:1px solid #347ab7;
+height:1.5em;
+width:1.1em;
+top:-1em;
+left:-.6em;
+
+}
+
+#parentProviderTree ul.multiple-nodes>li.container:last-child::before {
+content:' ';
+position:absolute;
+border-left:1px solid #347ab7;
+border-bottom:1px solid #347ab7;
+height:1.3em;
+width:.4em;
+top:-.75em;
+left:.9em;
+z-index:50;
+
+}
+
+#parentProviderTree ul.multiple-nodes::before {
+/*Draw vertical line for nodes with children*/
+content:'';
+height:91%;
+position:absolute;
+list-style-type:none;
+border-left:1px solid #347ab7;
+left:.9em;
+top: 0.3em;
+
+}
+
+
+.multiple-nodes>li:before {
+/*Draw lines for Child nodes*/
+content:' ';
+border-bottom:1px solid #347ab7;
+position:absolute;
+height:.1em;
+width:.5em;
+line-height:2em;
+top:.6em;
+left:.9em;
+}
+
+/* End draw tree lines */
+
+#parentProviderTree h5 {
+margin:0;
+}
+
+#parentProviderTree .providerDetails {
+padding-right:2em;
+}
+
+#parentProviderTree h5 span {
+position:relative;
+top:-3px;
+}
+
+
+
+    </style> 
+  </head>
+  <body>
+    <ul  id="parentProviderTree"></ul>
+    <script  type="text/babel" >
+/**
+ * Using React 0.14.7
+ *
+ * - 2016-02-16: Update to React 0.14.7, ReactDOM, Babel
+ * - 2015-04-28: Update to React 0.13.6
+ */
+
+/**
+ * Using React 0.14.7
+ *
+ * - 2016-02-16: Update to React 0.14.7, ReactDOM, Babel
+ * - 2015-04-28: Update to React 0.13.6
+ */
+
+var TreeNode = React.createClass({
+  getInitialState: function() {
+    return {
+      visible: true
+    };
+  },
+  render: function() {
+    var childNodes;
+    var classObj;
+
+
+    if (this.props.node.childNodes != null) {
+      childNodes = this.props.node.childNodes.map(function(node, index) {
+
+
+        return (<li className='container' key={index}><TreeNode node={node} /></li>);
+      });
+
+      classObj = {
+        togglable: true,
+        "togglable-down": this.state.visible,
+        "togglable-up": !this.state.visible
+      };
+    }
+
+    var style;
+    if (!this.state.visible) {
+      style = {display: "none"};
+    }
+
+    //  Check if node 
+    if (Object.keys(this.props.node).length<3){var lastNode='last-node';}
+    // if (!this.props.node.childNodes) {var lastNode='last-node' }; 
+    
+
+    if (typeof this.props.node.childNodes != "undefined") {
+        children=this.props.node.childNodes.length;
+        if (children>1) {var children='multiple-nodes';} else {var children='single-nodes';}
+    }
+if (this.props.node.branch.length>1) {console.log('yessss');}; 
+    return (
+      <ul>
+        <li className={lastNode}>
+        <h5 onClick={this.toggle} className={classNames(classObj)}>
+          <span className='providerDetails'>Provider ID:{this.props.node.branch[0].companyID} - Name:{this.props.node.branch[0].companyName}</span>
+          <span className='alert'>Alert Symbol:{this.props.node.branch[0].alert}</span>
+        </h5>
+
+            <ul className={children} style={style}>
+          {childNodes}
+            </ul>
+        </li>
+      </ul>
+    );
+  },
+  toggle: function() {
+    this.setState({visible: !this.state.visible});
+  }
+});
+
+var tree = {
+   branch: [{"companyName":"GGGG GParent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+   childNodes:[ 
+      {
+         branch:[{"companyName":"GGG GParent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+         childNodes:[
+            {
+               branch:[{"companyName":"GG GParent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+                              childNodes:[
+                  {
+                     branch:[{"companyName":"G GParent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+                     childNodes:[
+                        {
+                           branch:[{"companyName":"Grand Parent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+                           childNodes:[
+                              {
+                                 branch:[{"companyName":"Parent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
+                                 childNodes:[
+                                    {
+                                       branch:[{"companyName":"Child01 - (IN CONTEXT)","companyID":"xxxx ","level":"zero","alert":" --!Alert goes here-- "}],
+                                       childNodes:[
+                                          {
+                                             branch:[{"companyName":"grand Child","companyID":"xxxx ","level":"descendant","alert":" --!Alert goes here-- "}],
+                                             childNodes:[
+                                                {
+                                                   branch:[{"companyName":"great grand Child","companyID":"xxxx ","level":"descendant","alert":" --!Alert goes here-- "}],
+                                                   childNodes:[
+                                                {
+                                                   branch:[{"companyName":"GG grand Child","companyID":"xxxx ","level":"descendant","alert":" --!Alert goes here-- "}],
+                                                   childNodes:[
+                                                {
+                                                   branch:[{"companyName":"GGG Child","companyID":"xxxx ","level":"descendant","alert":" --!Alert goes here-- "}],
+                                                   childNodes:[
+                                                {
+                                                   branch:[{"companyName":"GGGG Child","companyID":"xxxx ","level":"descendant","alert":" --!Alert goes here-- "}]
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                          }
+                                       ]
+                                    },
+                                    {
+                                       branch:[{"companyName":"Child2","companyID":"xxxx ","level":"sibling","alert":" --!Alert goes here-- "}]
+                                    },
+                                    {
+                                       branch:[{"companyName":"Child3","companyID":"xxxx ","level":"sibling","alert":" --!Alert goes here-- "}]
+                                    },
+                                                                        {
+                                       branch:[{"companyName":"Child3","companyID":"xxxx ","level":"sibling","alert":" --!Alert goes here-- "}]
+                                    }
+                                 ]
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      },
+      {branch: [{"companyName":"GGGG GParent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}]}
+   ]
+};
+
+
+
+ReactDOM.render(
+  <TreeNode node={tree} />,
+  document.getElementById("parentProviderTree")
+);
+
+
+    </script>
+  </body>
+</html>
+
+
