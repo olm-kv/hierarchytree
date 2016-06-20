@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+<script src="js/react.min.js"></script>
+<script src="js/react-dom.min.js"></script>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
+     <script>
+/*!
+  Copyright (c) 2016 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+(function(){var a={}.hasOwnProperty;function b(){var g=[];for(var f=0;f<arguments.length;f++){var c=arguments[f];if(!c){continue}var d=typeof c;if(d==="string"||d==="number"){g.push(c)}else{if(Array.isArray(c)){g.push(b.apply(null,c))}else{if(d==="object"){for(var e in c){if(a.call(c,e)&&c[e]){g.push(e)}}}}}}return g.join(" ")}if(typeof module!=="undefined"&&module.exports){module.exports=b}else{if(typeof define==="function"&&typeof define.amd==="object"&&define.amd){define("classnames",[],function(){return b})}else{window.classNames=b}}}());
+
+</script>
+
+
+    <style>
+body {
+  font-family: "Helvetica Neue";
+}
+
+h3 {
+  color: #BF616A;
+}
+
+.togglable {
+  color: #D78770;
+  cursor: pointer;
+}
+
+.togglable-down::after,
+.togglable-up::after {
+  font-size: 8px;
+  margin-left: 0.5em;
+}
+
+.togglable-down::after {
+  content: "▼";
+  display: inline-block;
+}
+
+.togglable-up::after {
+  content: "▶";
+  display: inline-block;
+}
+
+ #tree ul { list-style-type: none; background: url(vline.png) repeat-y;
+     margin: 0;
+     padding: 0; } ul.tree ul {
+     margin-left: 10px;
+   }
+
+   #tree li {
+     margin: 0;
+     padding: 0 12px;
+      margin: 0; padding: 0 12px; line-height: 20px;
+     background: url(node.png) no-repeat;
+     color: #369;
+     font-weight: bold;
+   }
+
+     #tree  ul li.last {
+     background: #fff url(lastnode.png) no-repeat;
+   }
+
+    </style> 
+  </head>
+  <body>
+    <div  id="tree"></div>
+    <script  type="text/babel" >
+/**
+ * Using React 0.14.7
+ *
+ * - 2016-02-16: Update to React 0.14.7, ReactDOM, Babel
+ * - 2015-04-28: Update to React 0.13.6
+ */
+
+/**
+ * Using React 0.14.7
+ *
+ * - 2016-02-16: Update to React 0.14.7, ReactDOM, Babel
+ * - 2015-04-28: Update to React 0.13.6
+ */
+
+var TreeNode = React.createClass({
+  getInitialState: function() {
+    return {
+      visible: true
+    };
+  },
+  render: function() {
+    var childNodes;
+    var classObj;
+
+
+    if (this.props.node.childNodes != null) {
+      childNodes = this.props.node.childNodes.map(function(node, index) {
+        return (<li key={index}><TreeNode node={node} /></li>);
+      });
+
+      classObj = {
+        togglable: true,
+        "togglable-down": this.state.visible,
+        "togglable-up": !this.state.visible
+      };
+    }
+
+    var style;
+    if (!this.state.visible) {
+      style = {display: "none"};
+    }
+
+    return (
+      <div>
+        <h5 onClick={this.toggle} className={classNames(classObj)}>
+          {this.props.node.title}
+        </h5>
+        <ul style={style}>
+          {childNodes}
+        </ul>
+      </div>
+    );
+  },
+  toggle: function() {
+    this.setState({visible: !this.state.visible});
+  }
+});
+
+var tree = {
+   title: "GGGG GParent ",
+   childNodes:[
+      {
+         title:"GGG GParent ",
+         childNodes:[
+            {
+               title:"GG GParent ",
+               childNodes:[
+                  {
+                     title:"Great Grand Parent ",
+                     childNodes:[
+                        {
+                           title:"Grand parent",
+                           childNodes:[
+                              {
+                                 title:"Parent",
+                                 childNodes:[
+                                    {
+                                       title:"Child01 - (IN CONTEXT)",
+                                       childNodes:[
+                                          {
+                                             title:"Grand child",
+                                             childNodes:[
+                                                {
+                                                   title:" Great Grand child",
+                                                   childNodes:[
+                                                {
+                                                   title:" GG Grand child",
+                                                   childNodes:[
+                                                {
+                                                   title:" GGG Grand child",
+                                                   childNodes:[
+                                                {
+                                                   title:" GGGG Grand child"
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                                }
+                                             ]
+                                          }
+                                       ]
+                                    },
+                                    {
+                                       title:"child2"
+                                    },
+                                    {
+                                       title:"child3"
+                                    },
+                                                                        {
+                                       title:"child4"
+                                    }
+                                 ]
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+};
+
+ReactDOM.render(
+  <TreeNode node={tree} />,
+  document.getElementById("tree")
+);
+
+
+    </script>
+  </body>
+</html>
+
+
