@@ -28,6 +28,7 @@ cursor:pointer;
 }
 
 #parentProviderTree .togglable-down::after,.togglable-up::after {
+  /*+,- toggle handles*/
 margin-left:.5em;
 padding-top:.1em;
 display:inline-block;
@@ -47,6 +48,7 @@ z-index: 50;
 }
 
 #parentProviderTree .togglable-down::before,.togglable-up::before { 
+    /*background white border for toggle handles*/
     position: absolute;
     left: -.5em;
     top: .1em;
@@ -55,7 +57,7 @@ z-index: 50;
     width: 1.3em;
     background-color: #fff;
     content: " ";
-    z-index: 25;
+    z-index: 40;
 }
 
 #parentProviderTree .togglable-down::after {
@@ -100,6 +102,7 @@ left:0.9em;
 }
 
 #parentProviderTree ul.multiple-nodes>li.container:last-child::before {
+  /*descendant  level line seprator*/
 content:' ';
 position:absolute;
 border-left:1px solid #347ab7;
@@ -113,7 +116,7 @@ z-index:50;
 }
 
 #parentProviderTree ul.multiple-nodes::before {
-/*Draw vertical line for nodes with children*/
+/*Draw vertical line for descendant nodes*/
 content:'';
 height:91%;
 position:absolute;
@@ -121,7 +124,7 @@ list-style-type:none;
 border-left:1px solid #347ab7;
 left:.9em;
 top: 0.3em;
-
+z-index:50;
 }
 
 
