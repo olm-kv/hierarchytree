@@ -155,8 +155,30 @@ position:relative;
 top:-3px;
 }
 
+/*font */
 
 
+.alert  {
+    display:inline-block;
+    line-height:0px;
+    
+    border-radius:50%;
+    
+    background-color: #f6c265;
+    font-size:1.1em;
+    margin-top: -1em;
+}
+
+.alert span {
+    display:inline-block;
+    
+    padding-top:50%;
+    padding-bottom:50%;
+    
+    margin-left:0.3em;
+    margin-right:0.3em;
+    color:#fff;
+}
     </style> 
   </head>
   <body>
@@ -179,7 +201,7 @@ top:-3px;
 var TreeNode = React.createClass({
   getInitialState: function() {
     return {
-      visible: true
+      visible: false
     };
   },
   render: function() {
@@ -221,7 +243,7 @@ if (this.props.node.branch.length>1) {console.log('yessss');};
         <li className={lastNode}>
         <h5 onClick={this.toggle} className={classNames(classObj)}>
           <span className='providerDetails'>Provider ID:{this.props.node.branch[0].companyID} - Name:{this.props.node.branch[0].companyName}</span>
-          <span className='alert'>Alert Symbol:{this.props.node.branch[0].alert}</span>
+          <span className='alert'><span>!</span></span>
         </h5>
 
             <ul className={children} style={style}>
@@ -253,7 +275,9 @@ var tree = {
                            childNodes:[
                               {
                                  branch:[{"companyName":"Parent ","companyID":"xxxx ","level":"ancestor","alert":" --!Alert goes here-- "}],
-                                 childNodes:[
+                                 childNodes:[                                    {
+                                       branch:[{"companyName":"Child000002","companyID":"xxxx ","level":"sibling","alert":" --!Alert goes here-- "}]
+                                    },
                                     {
                                        branch:[{"companyName":"Child01 - (IN CONTEXT)","companyID":"xxxx ","level":"zero","alert":" --!Alert goes here-- "}],
                                        childNodes:[
